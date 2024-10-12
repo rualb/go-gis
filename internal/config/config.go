@@ -207,6 +207,7 @@ type AppConfigMapsGateway struct {
 	Enabled bool   `json:"enabled"`
 	APIKey  string `json:"api_key"`
 	URL     string `json:"url"`
+	Stdout  bool   `json:"stdout"`
 }
 
 type AppConfigVault struct {
@@ -362,10 +363,12 @@ func (x *AppConfig) readEnvVar() error {
 	reader.String(&x.OsmGateway.URL, "osm_url", nil)
 	reader.String(&x.OsmGateway.APIKey, "osm_api_key", nil)
 	reader.Bool(&x.OsmGateway.Enabled, "osm_enabled", nil)
+	reader.Bool(&x.OsmGateway.Stdout, "osm_stdout", nil)
 	// GoogleMapsGateway configuration
 	reader.String(&x.GmapsGateway.URL, "gmaps_url", nil)
 	reader.String(&x.GmapsGateway.APIKey, "gmaps_api_key", nil)
 	reader.Bool(&x.GmapsGateway.Enabled, "gmaps_enabled", nil)
+	reader.Bool(&x.GmapsGateway.Stdout, "gmaps_stdout", nil)
 
 	// Database configuration
 

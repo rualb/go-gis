@@ -17,6 +17,7 @@ func TestCmd(t *testing.T) {
 
 	os.Setenv("APP_ENV", "testing")
 	os.Setenv("APP_OSM_ENABLED", "1")
+	os.Setenv("APP_OSM_STDOUT", "1")
 
 	cmd := xcmd.Command{}
 

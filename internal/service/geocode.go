@@ -95,6 +95,9 @@ func (x *defaultGeocodeSrv) locationToAddressOSM(latLng string, lang string) (ad
 		address = "" // undef
 	} else {
 		address = respObj[0].DisplayName
+		if cnf.Stdout {
+			xlog.Info("Geocode: [LatLng: %v] [Address: %v]", latLng, address)
+		}
 	}
 
 	return address, err
@@ -136,6 +139,9 @@ func (x *defaultGeocodeSrv) locationToAddressGMAPS(latLng string, lang string) (
 		address = "" // undef
 	} else {
 		address = respItems[0].FormattedAddress
+		if cnf.Stdout {
+			xlog.Info("Geocode: [LatLng: %v] [Address: %v]", latLng, address)
+		}
 	}
 
 	return address, err
