@@ -73,7 +73,9 @@ func (x *defaultGeocodeSrv) locationToAddressOSM(latLng string, lang string) (ad
 	baseURL = strings.ReplaceAll(baseURL, "{Lang}", lang)
 	baseURL = strings.ReplaceAll(baseURL, "{ApiKey}", apiKey)
 
-	data, err := toolhttp.GetBytes(baseURL, nil, map[string]string{})
+	data, err := toolhttp.GetBytes(baseURL, nil, map[string]string{
+		"User-Agent": "Mozilla/5.0 (compatible; AcmeInc/1.0)",
+	})
 
 	if err != nil {
 		xlog.Error("OSM connect: %v", err)
@@ -112,7 +114,9 @@ func (x *defaultGeocodeSrv) locationToAddressGMAPS(latLng string, lang string) (
 	baseURL = strings.ReplaceAll(baseURL, "{Lang}", lang)
 	baseURL = strings.ReplaceAll(baseURL, "{ApiKey}", apiKey)
 
-	data, err := toolhttp.GetBytes(baseURL, nil, map[string]string{})
+	data, err := toolhttp.GetBytes(baseURL, nil, map[string]string{
+		"User-Agent": "Mozilla/5.0 (compatible; AcmeInc/1.0)",
+	})
 
 	if err != nil {
 		xlog.Error("GMAPS connect: %v", err)
