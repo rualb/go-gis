@@ -1,0 +1,11 @@
+{
+	"title": "Gis",
+ 
+	"osm_gateway": {
+		"enabled": true 
+	},
+ 	"gmaps_gateway": {
+		"enabled": false,
+		"api_key": ""
+	} 
+}
