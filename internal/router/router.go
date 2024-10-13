@@ -107,9 +107,7 @@ func initSys(e *echo.Echo, appService service.AppService) {
 
 }
 
-func initHealthController(e *echo.Echo, appService service.AppService) {
-
-	controller.SelfTest(appService)
+func initHealthController(e *echo.Echo, _ service.AppService) {
 
 	e.GET(consts.PathTestPingAPI, func(c echo.Context) error {
 

@@ -48,6 +48,11 @@ def lint():
 def check():
     lint()
     test()
+def linux():
+    env["GOOS"]="linux"
+    env["GOARCH"]="amd64" 
+    print("Building the binary... linux amd64")
+    subprocess.run(["go", "build",  "-C", f"cmd/{AppName}", "-o",f"./../../dist/", "-ldflags", "-s -w", ], env=env)
  
 # def push():
 #     print("Git push...")
@@ -71,6 +76,8 @@ if len(sys.argv) > 1:
     #     push() 
     elif command == "check":
         check() 
+    elif command == "linux":
+        linux() 
     else:
         help()
         exit(1)

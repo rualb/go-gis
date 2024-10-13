@@ -3,18 +3,35 @@ package controller
 // Handler web req handler
 
 import (
+	"go-gis/internal/config/consts"
 	"go-gis/internal/service"
+	xlog "go-gis/internal/tool/toollog"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
-type LocationDto struct {
-	LatLng string `query:"LatLng"` // not lat_lng but LatLng
-	Lang   string `query:"Lang"`
+type locationDto struct {
+	LatLng string `query:"lat_lng"` // not lat_lng but LatLng
+	Lang   string `query:"lang"`
 }
 
-type AddressDto struct {
+func (x locationDto) validate() bool {
+
+	// len(30) "123.1234567890, 123.1234567890"
+	if len(x.LatLng) > consts.LocationTextSize {
+		return false
+	}
+
+	// len(2)
+	if len(x.Lang) > consts.LangTextSize {
+		return false
+	}
+
+	return true
+}
+
+type addressDto struct {
 	Address string `json:"address"`
 }
 
@@ -40,19 +57,24 @@ func NewGeocodeController(appService service.AppService, c echo.Context) *Geocod
 func (x *GeocodeController) Geocode() error {
 
 	c := x.webCtxt
-	dto := &LocationDto{}
+	dto := &locationDto{}
 	err := c.Bind(dto)
 	if err != nil {
 		return err
+	}
+
+	if !dto.validate() {
+		return c.NoContent(http.StatusBadRequest)
 	}
 
 	g := x.appService.Geocode()
 
 	addr, err := g.LocationToAddress(dto.LatLng, dto.Lang)
 	if err != nil {
-		return err
+		xlog.Error("Gocode service error: %v", err)
+		return c.NoContent(http.StatusInternalServerError)
 	}
 
-	return c.JSON(http.StatusOK, AddressDto{Address: addr})
+	return c.JSON(http.StatusOK, addressDto{Address: addr})
 
 }

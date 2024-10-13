@@ -5,7 +5,9 @@ const AppName = "go-gis"
 
 const (
 	// DefaultTextSize default size of text field
-	DefaultTextSize = 100
+	DefaultTextSize  = 100
+	LocationTextSize = 30
+	LangTextSize     = 2
 )
 
 const (

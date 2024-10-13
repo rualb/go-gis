@@ -53,8 +53,6 @@ func (x *defaultGeocodeSrv) LocationToAddress(latLng string, lang string) (addre
 		return address, nil
 	}
 
-	xlog.Error("Define geocode service")
-
 	return "", fmt.Errorf("error no any geocode service")
 }
 
@@ -78,15 +76,13 @@ func (x *defaultGeocodeSrv) locationToAddressOSM(latLng string, lang string) (ad
 	})
 
 	if err != nil {
-		xlog.Error("OSM connect: %v", err)
-		return "", fmt.Errorf("error on geocode")
+		return "", fmt.Errorf("error on OSM connect: %v", err)
 	}
 
 	respObj := []respItemGeocodeOSM{} // array
 	err = json.Unmarshal(data, &respObj)
 	if err != nil {
-		xlog.Error("OSM resp: %v", err)
-		return "", fmt.Errorf("error on geocode")
+		return "", fmt.Errorf("error on OSM resp: %v", err)
 	}
 
 	respItems := respObj
@@ -122,15 +118,14 @@ func (x *defaultGeocodeSrv) locationToAddressGMAPS(latLng string, lang string) (
 	})
 
 	if err != nil {
-		xlog.Error("GMAPS connect: %v", err)
-		return "", fmt.Errorf("error on geocode")
+		return "", fmt.Errorf("error on GMAPS connect: %v", err)
 	}
 
 	respObj := respGeocodeGMAPS{} // array
 	err = json.Unmarshal(data, &respObj)
 	if err != nil {
-		xlog.Error("GMAPS resp: %v", err)
-		return "", fmt.Errorf("error on geocode")
+
+		return "", fmt.Errorf("error on GMAPS resp: %v", err)
 	}
 
 	respItems := respObj.Results

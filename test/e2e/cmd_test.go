@@ -31,7 +31,7 @@ func TestCmd(t *testing.T) {
 		query  map[string]string
 		search []string
 	}{
-		// http://localhost:31180/gis/api/geocode?LatLng=51.50814,-0.12848&Lang=en
+		// http://localhost:31180/gis/api/geocode?lat_lng=51.50814,-0.12848&lang=en
 		{title: "test loc to address", search: []string{`"address"`, "Trafalgar Square"}, url: "http://localhost:31180/gis/api/geocode", query: map[string]string{"Lang": "en", "LatLng": "51.50814,-0.12848"}},
 	}
 
