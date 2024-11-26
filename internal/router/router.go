@@ -11,7 +11,7 @@ import (
 	"go-gis/internal/config/consts"
 	"go-gis/internal/service"
 
-	xlog "go-gis/internal/tool/toollog"
+	xlog "go-gis/internal/util/utillog"
 
 	"github.com/labstack/echo-contrib/echoprometheus"
 	"github.com/labstack/echo/v4/middleware"
@@ -35,7 +35,8 @@ func initSys(e *echo.Echo, appService service.AppService) {
 
 	listen := appConfig.HTTPServer.Listen
 	listenSys := appConfig.HTTPServer.ListenSys
-	hasAnyService := false
+	sysMetrics := appConfig.HTTPServer.SysMetrics
+	hasAnyService := sysMetrics
 	sysAPIKey := appConfig.HTTPServer.SysAPIKey
 	hasAPIKey := sysAPIKey != ""
 	hasListenSys := listenSys != ""
@@ -43,8 +44,10 @@ func initSys(e *echo.Echo, appService service.AppService) {
 
 	if !hasListenSys {
 		return
-	} else {
-		xlog.Info("Sys api serve on: %v main: %v", listenSys, listen)
+	}
+
+	if !hasAnyService {
+		return
 	}
 
 	if !hasAPIKey {
@@ -69,8 +72,7 @@ func initSys(e *echo.Echo, appService service.AppService) {
 		},
 	})
 
-	if appConfig.HTTPServer.SysMetrics {
-		hasAnyService = true
+	if sysMetrics {
 		// may be eSys := echo.New() // this Echo will run on separate port
 		e.GET(
 			consts.PathSysMetricsAPI,
@@ -80,29 +82,23 @@ func initSys(e *echo.Echo, appService service.AppService) {
 
 	}
 
-	if hasAnyService {
+	if startNewListener {
 
-		if startNewListener {
+		// start as async task
+		go func() {
+			xlog.Info("Sys api serve on: %v main: %v", listenSys, listen)
 
-			// start as async task
-			go func() {
-				xlog.Info("Starting sys api server: %v", listenSys)
-
-				if err := e.Start(listenSys); err != nil {
-					if err != http.ErrServerClosed {
-						xlog.Error("%v", err)
-					} else {
-						xlog.Info("shutting down the server")
-					}
+			if err := e.Start(listenSys); err != nil {
+				if err != http.ErrServerClosed {
+					xlog.Error("%v", err)
+				} else {
+					xlog.Info("shutting down the server")
 				}
-			}()
-
-		} else {
-			xlog.Info("Sys api server serve on main listener: %v", listen)
-		}
+			}
+		}()
 
 	} else {
-		xlog.Warn("No any active service for sys api")
+		xlog.Info("Sys api server serve on main listener: %v", listen)
 	}
 
 }

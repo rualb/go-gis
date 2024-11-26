@@ -6,9 +6,9 @@ import (
 	"flag"
 	"fmt"
 	"go-gis/internal/config/consts"
-	"go-gis/internal/tool/toolconfig"
-	"go-gis/internal/tool/toolhttp"
-	xlog "go-gis/internal/tool/toollog"
+	"go-gis/internal/util/utilconfig"
+	"go-gis/internal/util/utilhttp"
+	xlog "go-gis/internal/util/utillog"
 	"math"
 	"net/url"
 	"os"
@@ -303,8 +303,8 @@ func NewAppConfig() *AppConfig {
 			RateLimit: 0,
 			RateBurst: 0,
 
-			Listen: "localhost:31180",
-			//ListenTLS: "localhost:31183",
+			Listen: "127.0.0.1:31180",
+			//ListenTLS: "127.0.0.1:31183",
 			CertDir: "",
 
 			SysAPIKey: "",
@@ -513,7 +513,7 @@ func (x *AppConfigSource) Load() error {
 
 			xlog.Info("Loading config from: %v", dir)
 
-			err := toolconfig.LoadConfig(res /*pointer*/, dir, fileName)
+			err := utilconfig.LoadConfig(res /*pointer*/, dir, fileName)
 
 			if err != nil {
 				return err
@@ -627,7 +627,7 @@ func (x *AppConfig) FromURL(dir string, file string) error {
 
 	// fmt.Println("Reading config from file: ", file)
 
-	data, err := toolhttp.GetBytes(fullPath, nil, nil)
+	data, err := utilhttp.GetBytes(fullPath, nil, nil)
 
 	if err != nil {
 		return fmt.Errorf("error with file %v: %v", fullPath, err)

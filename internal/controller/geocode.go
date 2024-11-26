@@ -5,18 +5,18 @@ package controller
 import (
 	"go-gis/internal/config/consts"
 	"go-gis/internal/service"
-	xlog "go-gis/internal/tool/toollog"
+	xlog "go-gis/internal/util/utillog"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
-type locationDto struct {
+type locationDTO struct {
 	LatLng string `query:"lat_lng"` // not lat_lng but LatLng
 	Lang   string `query:"lang"`
 }
 
-func (x locationDto) validate() bool {
+func (x locationDTO) validate() bool {
 
 	// len(30) "123.1234567890, 123.1234567890"
 	if len(x.LatLng) > consts.LocationTextSize {
@@ -31,7 +31,7 @@ func (x locationDto) validate() bool {
 	return true
 }
 
-type addressDto struct {
+type addressDTO struct {
 	Address string `json:"address"`
 }
 
@@ -57,7 +57,7 @@ func NewGeocodeController(appService service.AppService, c echo.Context) *Geocod
 func (x *GeocodeController) Geocode() error {
 
 	c := x.webCtxt
-	dto := &locationDto{}
+	dto := &locationDTO{}
 	err := c.Bind(dto)
 	if err != nil {
 		return err
@@ -75,6 +75,6 @@ func (x *GeocodeController) Geocode() error {
 		return c.NoContent(http.StatusInternalServerError)
 	}
 
-	return c.JSON(http.StatusOK, addressDto{Address: addr})
+	return c.JSON(http.StatusOK, addressDTO{Address: addr})
 
 }

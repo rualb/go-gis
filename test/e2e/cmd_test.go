@@ -2,7 +2,7 @@ package e2e
 
 import (
 	xcmd "go-gis/internal/cmd"
-	"go-gis/internal/tool/toolhttp"
+	"go-gis/internal/util/utilhttp"
 	"os"
 	"strings"
 	"testing"
@@ -31,8 +31,8 @@ func TestCmd(t *testing.T) {
 		query  map[string]string
 		search []string
 	}{
-		// http://localhost:31180/gis/api/geocode?lat_lng=51.50814,-0.12848&lang=en
-		{title: "test loc to address", search: []string{`"address"`, "Trafalgar Square"}, url: "http://localhost:31180/gis/api/geocode", query: map[string]string{"lang": "en", "lat_lng": "51.50814,-0.12848"}},
+		// http://127.0.0.1:31180/gis/api/geocode?lat_lng=51.50814,-0.12848&lang=en
+		{title: "test loc to address", search: []string{`"address"`, "Trafalgar Square"}, url: "http://127.0.0.1:31180/gis/api/geocode", query: map[string]string{"lang": "en", "lat_lng": "51.50814,-0.12848"}},
 	}
 
 	for _, itm := range urls {
@@ -40,7 +40,7 @@ func TestCmd(t *testing.T) {
 		t.Run(itm.title, func(t *testing.T) {
 
 			t.Logf("url %v", itm.url)
-			arr, err := toolhttp.GetBytes(itm.url, itm.query, nil)
+			arr, err := utilhttp.GetBytes(itm.url, itm.query, nil)
 
 			if err != nil {
 				t.Errorf("Error : %v", err)

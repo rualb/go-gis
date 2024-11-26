@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-gis/internal/config"
-	"go-gis/internal/tool/toolhttp"
-	xlog "go-gis/internal/tool/toollog"
+	"go-gis/internal/util/utilhttp"
+	xlog "go-gis/internal/util/utillog"
 	"net/url"
 	"strings"
 )
@@ -57,21 +57,21 @@ func (x *defaultGeocodeSrv) LocationToAddress(latLng string, lang string) (addre
 }
 
 func (x *defaultGeocodeSrv) locationToAddressOSM(latLng string, lang string) (address string, err error) {
-	cnf := &x.appConfig.OsmGateway
-	if !cnf.Enabled {
+	cfg := &x.appConfig.OsmGateway
+	if !cfg.Enabled {
 		return "", nil
 	}
 	latLng = url.QueryEscape(latLng)
 	lang = url.QueryEscape(lang)
-	apiKey := url.QueryEscape(cnf.APIKey)
+	apiKey := url.QueryEscape(cfg.APIKey)
 
-	baseURL := cnf.URL
+	baseURL := cfg.URL
 
 	baseURL = strings.ReplaceAll(baseURL, "{LatLng}", latLng)
 	baseURL = strings.ReplaceAll(baseURL, "{Lang}", lang)
 	baseURL = strings.ReplaceAll(baseURL, "{ApiKey}", apiKey)
 
-	data, err := toolhttp.GetBytes(baseURL, nil, map[string]string{
+	data, err := utilhttp.GetBytes(baseURL, nil, map[string]string{
 		"User-Agent": "Mozilla/5.0 (compatible; AcmeInc/1.0)",
 	})
 
@@ -91,7 +91,7 @@ func (x *defaultGeocodeSrv) locationToAddressOSM(latLng string, lang string) (ad
 		address = "" // undef
 	} else {
 		address = respObj[0].DisplayName
-		if cnf.Stdout {
+		if cfg.Stdout {
 			xlog.Info("Geocode: [LatLng: %v] [Address: %v]", latLng, address)
 		}
 	}
@@ -99,21 +99,21 @@ func (x *defaultGeocodeSrv) locationToAddressOSM(latLng string, lang string) (ad
 	return address, err
 }
 func (x *defaultGeocodeSrv) locationToAddressGMAPS(latLng string, lang string) (address string, err error) {
-	cnf := &x.appConfig.GmapsGateway
-	if !cnf.Enabled {
+	cfg := &x.appConfig.GmapsGateway
+	if !cfg.Enabled {
 		return "", nil
 	}
 	latLng = url.QueryEscape(latLng)
 	lang = url.QueryEscape(lang)
-	apiKey := url.QueryEscape(cnf.APIKey)
+	apiKey := url.QueryEscape(cfg.APIKey)
 
-	baseURL := cnf.URL
+	baseURL := cfg.URL
 
 	baseURL = strings.ReplaceAll(baseURL, "{LatLng}", latLng)
 	baseURL = strings.ReplaceAll(baseURL, "{Lang}", lang)
 	baseURL = strings.ReplaceAll(baseURL, "{ApiKey}", apiKey)
 
-	data, err := toolhttp.GetBytes(baseURL, nil, map[string]string{
+	data, err := utilhttp.GetBytes(baseURL, nil, map[string]string{
 		"User-Agent": "Mozilla/5.0 (compatible; AcmeInc/1.0)",
 	})
 
@@ -134,7 +134,7 @@ func (x *defaultGeocodeSrv) locationToAddressGMAPS(latLng string, lang string) (
 		address = "" // undef
 	} else {
 		address = respItems[0].FormattedAddress
-		if cnf.Stdout {
+		if cfg.Stdout {
 			xlog.Info("Geocode: [LatLng: %v] [Address: %v]", latLng, address)
 		}
 	}
