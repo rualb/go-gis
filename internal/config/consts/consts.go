@@ -4,16 +4,16 @@ package consts
 const AppName = "go-gis"
 
 const (
-	// DefaultTextSize default size of text field
-	DefaultTextSize  = 100
-	LocationTextSize = 30
-	LangTextSize     = 2
+	// DefaultTextLength default size of text field
+	DefaultTextLength  = 100
+	LocationTextLength = 30
+	LangTextLength     = 2
 )
 
 const (
 	PathSysMetricsAPI = "/sys/api/metrics"
 
-	PathTestPingAPI = "/test/api/ping"
+	PathGisPingDebugAPI = "/gis/api/ping"
 
 	PathGisGeocodeAPI = "/gis/api/geocode"
 )

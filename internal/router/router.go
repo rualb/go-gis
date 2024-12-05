@@ -19,7 +19,7 @@ import (
 
 func Init(e *echo.Echo, appService service.AppService) {
 
-	initHealthController(e, appService)
+	initDebugController(e, appService)
 
 	initGeocodeController(e, appService)
 
@@ -103,13 +103,8 @@ func initSys(e *echo.Echo, appService service.AppService) {
 
 }
 
-func initHealthController(e *echo.Echo, _ service.AppService) {
-
-	e.GET(consts.PathTestPingAPI, func(c echo.Context) error {
-
-		return c.String(http.StatusOK, "pong")
-
-	})
+func initDebugController(e *echo.Echo, _ service.AppService) {
+	e.GET(consts.PathGisPingDebugAPI, func(c echo.Context) error { return c.String(http.StatusOK, "pong") })
 
 }
 func initGeocodeController(e *echo.Echo, appService service.AppService) {

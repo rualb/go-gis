@@ -19,12 +19,12 @@ type locationDTO struct {
 func (x locationDTO) validate() bool {
 
 	// len(30) "123.1234567890, 123.1234567890"
-	if len(x.LatLng) > consts.LocationTextSize {
+	if len(x.LatLng) > consts.LocationTextLength {
 		return false
 	}
 
 	// len(2)
-	if len(x.Lang) > consts.LangTextSize {
+	if len(x.Lang) > consts.LangTextLength {
 		return false
 	}
 
