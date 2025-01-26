@@ -71,7 +71,7 @@ func (x *GeocodeController) Geocode() error {
 
 	addr, err := g.LocationToAddress(dto.LatLng, dto.Lang)
 	if err != nil {
-		xlog.Error("Gocode service error: %v", err)
+		xlog.Error("gocode service error: %v", err)
 		return c.NoContent(http.StatusInternalServerError)
 	}
 

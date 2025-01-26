@@ -44,11 +44,11 @@ func TestLangWithPlaceholder(t *testing.T) {
 	lang := &userLang{
 		code: "en",
 		data: map[string]string{
-			"Hello, {0}": "Hello, {0}",
+			`Hello, {0}`: `Hello, {0}`,
 		},
 	}
 
-	result := lang.Lang("Hello, {0}", "John")
+	result := lang.Lang(`Hello, {0}`, "John")
 	expected := "Hello, John"
 	if result != expected {
 		t.Errorf("Expected '%s', got '%s'", expected, result)
@@ -107,6 +107,7 @@ func TestLangCode(t *testing.T) {
 	}
 
 	if lang.LangCode() != "en" {
-		t.Errorf("Expected 'en', got '%s'", lang.LangCode())
+		t.Errorf("Expected 'en', got '%s'",
+			lang.LangCode())
 	}
 }

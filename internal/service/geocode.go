@@ -67,9 +67,9 @@ func (x *defaultGeocodeSrv) locationToAddressOSM(latLng string, lang string) (ad
 
 	baseURL := cfg.URL
 
-	baseURL = strings.ReplaceAll(baseURL, "{LatLng}", latLng)
-	baseURL = strings.ReplaceAll(baseURL, "{Lang}", lang)
-	baseURL = strings.ReplaceAll(baseURL, "{ApiKey}", apiKey)
+	baseURL = strings.ReplaceAll(baseURL, "{lat_lng}", latLng)
+	baseURL = strings.ReplaceAll(baseURL, "{lang}", lang)
+	baseURL = strings.ReplaceAll(baseURL, "{api_key}", apiKey)
 
 	data, err := utilhttp.GetBytes(baseURL, nil, map[string]string{
 		"User-Agent": "Mozilla/5.0 (compatible; AcmeInc/1.0)",
@@ -92,7 +92,7 @@ func (x *defaultGeocodeSrv) locationToAddressOSM(latLng string, lang string) (ad
 	} else {
 		address = respObj[0].DisplayName
 		if cfg.Stdout {
-			xlog.Info("Geocode: [LatLng: %v] [Address: %v]", latLng, address)
+			xlog.Info("geocode: [LatLng: %v] [Address: %v]", latLng, address)
 		}
 	}
 
@@ -109,9 +109,9 @@ func (x *defaultGeocodeSrv) locationToAddressGMAPS(latLng string, lang string) (
 
 	baseURL := cfg.URL
 
-	baseURL = strings.ReplaceAll(baseURL, "{LatLng}", latLng)
-	baseURL = strings.ReplaceAll(baseURL, "{Lang}", lang)
-	baseURL = strings.ReplaceAll(baseURL, "{ApiKey}", apiKey)
+	baseURL = strings.ReplaceAll(baseURL, "{lat_lng}", latLng)
+	baseURL = strings.ReplaceAll(baseURL, "{lang}", lang)
+	baseURL = strings.ReplaceAll(baseURL, "{api_key}", apiKey)
 
 	data, err := utilhttp.GetBytes(baseURL, nil, map[string]string{
 		"User-Agent": "Mozilla/5.0 (compatible; AcmeInc/1.0)",
@@ -135,7 +135,7 @@ func (x *defaultGeocodeSrv) locationToAddressGMAPS(latLng string, lang string) (
 	} else {
 		address = respItems[0].FormattedAddress
 		if cfg.Stdout {
-			xlog.Info("Geocode: [LatLng: %v] [Address: %v]", latLng, address)
+			xlog.Info("geocode: [LatLng: %v] [Address: %v]", latLng, address)
 		}
 	}
 
