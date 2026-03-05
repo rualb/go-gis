@@ -57,7 +57,9 @@ func (x *defaultAppService) mustBuild() {
 
 	x.geocode = NewGeocode(appConfig)
 
-	mustCreateRepository(x)
+	if appConfig.DB.Migration {
+		mustCreateRepository(x) //
+	}
 }
 
 func mustConfigRuntime(appConfig *config.AppConfig) {

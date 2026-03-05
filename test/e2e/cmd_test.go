@@ -32,7 +32,7 @@ func TestCmd(t *testing.T) {
 		search []string
 	}{
 		// http://127.0.0.1:31180/gis/api/geocode?lat_lng=51.50814,-0.12848&lang=en
-		{title: "test loc to address", search: []string{`"address"`, "Trafalgar Square"}, url: "http://127.0.0.1:31180/gis/api/geocode", query: map[string]string{"lang": "en", "lat_lng": "51.50814,-0.12848"}},
+		{title: "test loc to address", search: []string{`"address"`, "London"}, url: "http://127.0.0.1:31180/gis/api/geocode", query: map[string]string{"lang": "en", "lat_lng": "51.50814,-0.12848"}},
 	}
 
 	for _, itm := range urls {

@@ -90,7 +90,7 @@ const (
 )
 
 func connectDatabase(
-	config *config.Database,
+	cfg *config.Database,
 	// logger loggerX.AppLogger,
 ) (*gorm.DB, error) {
 	var dsn string
@@ -104,12 +104,14 @@ func connectDatabase(
 		// Logger: loggerGorm.Default.LogMode(logger_gorm.Info),
 	}
 
-	if config.Dialect == POSTGRES {
-		dsn = fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
-			config.Host, config.Port, config.User,
-			config.Name, config.Password)
+	switch cfg.Dialect {
+	case POSTGRES:
+		sslmode := "disable" // TODO "require" if cfg.SSL
+		dsn = fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
+			cfg.Host, cfg.Port, cfg.User,
+			cfg.Name, cfg.Password, sslmode)
 		return gorm.Open(postgres.Open(dsn), gormConfig)
-	} else if config.Dialect == SQLITE {
+	case SQLITE:
 		panic("sqlite not active")
 		// return gorm.Open(sqlite.Open(config.Host), gormConfig)
 	}
